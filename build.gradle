@@ -19,14 +19,32 @@ import java.nio.charset.StandardCharsets
 
 buildscript {
   repositories {
+    mavenLocal()
+    jcenter()
+
+    maven {
+      allowInsecureProtocol = true
+      url 'http://maven.aliyun.com/nexus/content/repositories/google'
+    }
+    maven {
+      allowInsecureProtocol = true
+      url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+    }
     mavenCentral()
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
   }
   apply from: "$rootDir/gradle/dependencies.gradle"
 
   dependencies {
     // For Apache Rat plugin to ignore non-Git files
     classpath "org.ajoberstar.grgit:grgit-core:$versions.grgit"
+    classpath "org.nosphere.apache:creadur-rat-gradle:0.7.1"
+    classpath "com.diffplug.spotless:spotless-plugin-gradle:6.11.0"
   }
+
+
 }
 
 plugins {
@@ -113,6 +131,17 @@ ext {
 allprojects {
 
   repositories {
+    mavenLocal()
+    jcenter()
+    maven {
+      allowInsecureProtocol = true
+      url 'http://maven.aliyun.com/nexus/content/repositories/google'
+    }
+    maven {
+      allowInsecureProtocol = true
+      url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+    }
+
     mavenCentral()
   }
 
@@ -221,7 +250,8 @@ subprojects {
   task allDeps(type: DependencyReportTask) {}
   // enable running :dependencyInsight task recursively on all subprojects
   // eg: ./gradlew allDepInsight --configuration runtime --dependency com.fasterxml.jackson.core:jackson-databind
-  task allDepInsight(type: DependencyInsightReportTask) {showingAllVariants = false} doLast {}
+//  task allDepInsight(type: DependencyInsightReportTask) {showingAllVariants = false} doLast {}
+
 
   apply plugin: 'java-library'
   apply plugin: 'checkstyle'
